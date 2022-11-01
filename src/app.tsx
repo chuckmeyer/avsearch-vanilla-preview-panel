@@ -49,7 +49,7 @@ const { setIsOpen } = autocomplete({
         },
         templates: {
           header() {
-            return <strong>Sessions</strong>;
+            return <span className="aa-SourceHeaderTitle">Sessions</span>;
           },
           item({ item, components }) {
             return (
@@ -78,35 +78,45 @@ const { setIsOpen } = autocomplete({
   },
   render({ children, state, Fragment, components }, root) {
     const { preview } = state.context;
-		render(
-			<Fragment>
-				<div className="aa-Grid">
-					<div className="aa-Results aa-Column">{children}</div>
-					<div className="aa-Preview aa-Column">
-						<div className="aa-PreviewImage">
-							<img src={preview.thumbnail} alt={preview.videoTitle} />
-						</div>
-						<div className="aa-PreviewTitle">
-							<components.Snippet hit={preview} attribute="videoTitle" />
-						</div>
-						<div class="aa-PreviewContentSubtitle">
-							{preview.categories.join(", ")}
-						</div>
-						<hr />
-						<div className="aa-ItemContentDescription">
-							<components.Highlight hit={preview} attribute="text" />
-						</div>
-					</div>
-				</div>
-			</Fragment>,
-			root
-		);
+    if (!preview) {
+      render(
+        <Fragment>
+          <div className="aa-Grid">
+            <div className="aa-Results aa-Column">{children}</div>
+          </div>
+        </Fragment>,
+        root
+      );
+    } else {
+      render(
+        <Fragment>
+          <div className="aa-Grid">
+            <div className="aa-Results aa-Column">{children}</div>
+            <div className="aa-Preview aa-Column">
+              <div className="aa-PreviewImage">
+                <img src={preview.thumbnail} alt={preview.videoTitle} />
+              </div>
+              <div className="aa-PreviewTitle">
+                <components.Snippet hit={preview} attribute="videoTitle" />
+              </div>
+              <div class="aa-PreviewContentSubtitle">
+                {preview.categories.join(", ")}
+              </div>
+              <hr />
+              <div className="aa-ItemContentDescription">
+                <components.Highlight hit={preview} attribute="text" />
+              </div>
+            </div>
+          </div>
+        </Fragment>,
+        root
+      );
+    }
   }
 });
 
-document.addEventListener('keydown', (event) => {
-  if (event.metaKey && event.key.toLowerCase() === 'k') {
+document.addEventListener("keydown", (event) => {
+  if (event.metaKey && event.key.toLowerCase() === "k") {
     setIsOpen(true);
   }
 });
-
